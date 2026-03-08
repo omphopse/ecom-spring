@@ -22,13 +22,14 @@ public class SecurityConfig {
         		 
         	  .requestMatchers("/user/**").hasRole("USER")
         	  .requestMatchers("/admin/**").hasRole("ADMIN")
-              .requestMatchers("/public/**").permitAll()
+              .requestMatchers("/public/**","/h2-console/**").permitAll()
               .anyRequest().authenticated()
          )
          .formLogin(withDefaults());
 
 		 http
 		    .csrf(csrf -> csrf.disable())
+		    .headers(headers -> headers.frameOptions(frame -> frame.disable()))
 		    .httpBasic(withDefaults());
 		 
 		 return http.build();
