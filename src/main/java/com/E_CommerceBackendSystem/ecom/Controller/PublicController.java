@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.E_CommerceBackendSystem.ecom.Enitity.Users;
+import com.E_CommerceBackendSystem.ecom.Services.UserServiceInterface;
 import com.E_CommerceBackendSystem.ecom.Services.ServicesImpl.UserServices.UserServices;
 
 @RestController
@@ -17,7 +18,7 @@ import com.E_CommerceBackendSystem.ecom.Services.ServicesImpl.UserServices.UserS
 public class PublicController {
 	
 	@Autowired
-	private UserServices userServices;
+	private UserServiceInterface userServices;
 	
 	@GetMapping
 	public String test() {
