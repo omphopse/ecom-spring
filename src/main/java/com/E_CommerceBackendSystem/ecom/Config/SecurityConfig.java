@@ -19,7 +19,6 @@ public class SecurityConfig {
 //        			 AuthorizationManagerRequestMatcherRegistry
 //        		 Which basically means:
 //        			 object used to define URL access rules
-        		 
         	  .requestMatchers("/user/**").hasRole("USER")
         	  .requestMatchers("/admin/**").hasRole("ADMIN")
               .requestMatchers("/public/**","/h2-console/**").permitAll()

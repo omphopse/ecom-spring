@@ -3,6 +3,9 @@ package com.E_CommerceBackendSystem.ecom.Services;
 import java.util.List;
 import java.util.Map;
 
+import com.E_CommerceBackendSystem.ecom.Enitity.Order;
+import com.E_CommerceBackendSystem.ecom.Enitity.OrderItem;
+import com.E_CommerceBackendSystem.ecom.Enitity.Payments;
 import com.E_CommerceBackendSystem.ecom.Enitity.Users;
 
 public interface UserServiceInterface{
@@ -13,4 +16,6 @@ public interface UserServiceInterface{
 	Map<Object,Object> getCart(long userId);
 	boolean removeItem(long userId,long productId);
 	boolean clearCart(long userId);
+	boolean createOrder(Order order);
+	boolean checkOut(Payments payment, Users user);
 }

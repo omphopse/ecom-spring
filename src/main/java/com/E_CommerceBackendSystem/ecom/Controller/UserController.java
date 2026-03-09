@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.E_CommerceBackendSystem.ecom.Enitity.Payments;
+import com.E_CommerceBackendSystem.ecom.Enitity.Users;
 import com.E_CommerceBackendSystem.ecom.Enitity.AdminEntity.Product;
 import com.E_CommerceBackendSystem.ecom.Enitity.userentity.CartItem;
 import com.E_CommerceBackendSystem.ecom.Services.UserServiceInterface;
@@ -77,5 +79,13 @@ public class UserController {
 		long u_id = serviceInterface.findByUserName(authentication.getName()).getId();
 		if(serviceInterface.clearCart(u_id)) return new ResponseEntity<>("cart cleared",HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>("failed to clear cart",HttpStatus.NO_CONTENT);
+	}
+	
+	@PostMapping("/checkout")
+	public ResponseEntity<?> checkout(@RequestBody Payments payments){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Users user = serviceInterface.findByUserName(authentication.getName());
+		if(serviceInterface.checkOut(payments, user)) return new ResponseEntity<>("Order Placed Successfully",HttpStatus.OK);
+		return new ResponseEntity<>("failed to place order",HttpStatus.BAD_REQUEST);
 	}
 }
