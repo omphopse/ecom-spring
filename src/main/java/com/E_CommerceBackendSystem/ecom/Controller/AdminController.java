@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.E_CommerceBackendSystem.ecom.Enitity.Order;
+import com.E_CommerceBackendSystem.ecom.Enitity.Payments;
+import com.E_CommerceBackendSystem.ecom.Enitity.Users;
 import com.E_CommerceBackendSystem.ecom.Enitity.AdminEntity.Category;
 import com.E_CommerceBackendSystem.ecom.Enitity.AdminEntity.Product;
 import com.E_CommerceBackendSystem.ecom.Services.adminservices.AdminServiceInterface;
@@ -62,4 +65,21 @@ public class AdminController {
 		if(adminServiceInterface.updateProducts(p_Id,product)) return new ResponseEntity<>(product,HttpStatus.ACCEPTED);
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
+	
+	@GetMapping("/getallusers")
+	public ResponseEntity<List<Users>> getAllUsers(){
+		return new ResponseEntity<>(adminServiceInterface.getAllUser(),HttpStatus.OK);
+	}
+	
+	@GetMapping("/getallorders")
+	public ResponseEntity<List<Order>> getAllOrders(){
+		return new ResponseEntity<>(adminServiceInterface.getAllOrder(),HttpStatus.OK);
+	}
+
+	
+	@GetMapping("/getallpayments")
+	public ResponseEntity<List<Payments>> getAllPayments(){
+		return new ResponseEntity<>(adminServiceInterface.getAllPayments(),HttpStatus.OK);
+	}
+
 }

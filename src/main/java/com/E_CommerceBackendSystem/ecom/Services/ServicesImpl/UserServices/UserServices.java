@@ -1,6 +1,7 @@
 package com.E_CommerceBackendSystem.ecom.Services.ServicesImpl.UserServices;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import com.E_CommerceBackendSystem.ecom.Enitity.Users;
 import com.E_CommerceBackendSystem.ecom.Enitity.AdminEntity.Product;
 import com.E_CommerceBackendSystem.ecom.Services.UserServiceInterface;
 import com.E_CommerceBackendSystem.ecom.Services.adminservices.AdminServiceInterface;
+import com.E_CommerceBackendSystem.ecom.dto.UserCartDto;
 import com.E_CommerceBackendSystem.ecom.enums.OrderStatus;
 import com.E_CommerceBackendSystem.ecom.enums.PaymentMethods;
 import com.E_CommerceBackendSystem.ecom.enums.PaymentStatus;
@@ -25,6 +27,9 @@ import com.E_CommerceBackendSystem.ecom.repository.PaymentRepository;
 import com.E_CommerceBackendSystem.ecom.repository.UserRepository;
 import com.E_CommerceBackendSystem.ecom.repository.adminrepository.ProductRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class UserServices implements UserServiceInterface {
 
@@ -72,16 +77,31 @@ public class UserServices implements UserServiceInterface {
 
 	@Override
 	public boolean addItemstoCart(long u_id, long p_id, int quantity) {
-	    String cartKey = "cart:" + u_id;
-	    redisTemplate.opsForHash().increment(cartKey, String.valueOf(p_id), quantity);
-	    redisTemplate.expire(cartKey, Duration.ofHours(24));
-	    return true;
+	   try {
+		   String cartKey = "cart:" + u_id;
+		    
+		    Product product= productRepository.findById(p_id).get();
+		    
+		    if(product.getStockQuantity()>=quantity) {
+			    redisTemplate.opsForHash().increment(cartKey, String.valueOf(p_id), quantity);
+			    redisTemplate.expire(cartKey, Duration.ofHours(24));
+			    return true;
+		    }
+		    else {
+		    	throw new RuntimeException("Only "+product.getStockQuantity()+" "+product.getP_name()+" left");
+		    }
+	   }
+	   catch(RuntimeException e) {
+		   log.warn(e.getMessage());
+		   return false;
+	   }
 	}
 	
 	@Override
 	public Map<Object,Object> getCart(long userId){
 	    return redisTemplate.opsForHash().entries("cart:"+userId);
 	}
+	
 	
 	@Override
 	public boolean removeItem(long userId, long productId) {
@@ -112,13 +132,17 @@ public class UserServices implements UserServiceInterface {
 
 		    Product product = productRepository.findById(productId).get();
 
-		    OrderItem item = new OrderItem();
-		    item.setOrder_id(order);
-		    item.setProduct_id(product);
-		    item.setQuantity(quantity);
-		    item.setPrice(product.getPrice());
-		    orderItemRepository.save(item);
-		    
+		    if(product.getStockQuantity()>=quantity) {
+			    OrderItem item = new OrderItem();
+			    item.setOrder_id(order);
+			    item.setProduct_id(product);
+			    item.setQuantity(quantity);
+			    item.setPrice(product.getPrice());
+			    orderItemRepository.save(item);
+		    }
+		    else {
+		    	throw new RuntimeException("Only "+product.getStockQuantity()+" left");
+		    }
 		    total += product.getPrice() * quantity;
 		}
 		
@@ -139,7 +163,32 @@ public class UserServices implements UserServiceInterface {
 		return false;
 	}
 
+	@Override
+	public List<Order> findMyOrdes(long id) {
+		return orderRepository.findAllByUserId(id);
+	}
+
+	@Override
+	public List<UserCartDto> getCart1(long userId) {
+		Map<Object,Object> cart = getCart(userId);
+		List<UserCartDto> myCart= new ArrayList<>();
+		for(Map.Entry<Object,Object> entry : cart.entrySet()){
+
+		    Long productId = Long.parseLong(entry.getKey().toString());
+		    Integer quantity = Integer.parseInt(entry.getValue().toString());
+
+		    Product product = productRepository.findById(productId).get();
+		    
+		    myCart.add(transFromToDto(product, quantity));
+		}
+		
+		if(myCart!=null) return myCart;
+		
+		return null;
+	}
+
 	
-	
-	
+	public UserCartDto transFromToDto(Product product, int quantity) {
+		return new UserCartDto(product.getCategory().getCat_Name(),product.getP_name(),product.getPrice(),quantity,quantity*product.getPrice());
+	}
 }

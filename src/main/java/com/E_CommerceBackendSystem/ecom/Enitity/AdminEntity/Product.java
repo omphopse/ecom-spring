@@ -31,7 +31,7 @@ public class Product {
 	@Column(name="p_price",nullable=false)
 	private float price;
 	@Column(name="p_stock_quantity",nullable=false)
-	private int p_stock_quantity;
+	private int stockQuantity;
 	@ManyToOne
 	@JoinColumn(name="cat_id")
 	private Category category;

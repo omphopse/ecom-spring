@@ -36,6 +36,6 @@ public class Order {
 	@Column(name="created_at")
 	private Instant created_at;
 	@ManyToOne
-	@JoinColumn(name="id")
+	@JoinColumn(name="u_id")
 	private Users user;
 }

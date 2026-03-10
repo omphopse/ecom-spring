@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.E_CommerceBackendSystem.ecom.Enitity.Order;
 import com.E_CommerceBackendSystem.ecom.Enitity.Payments;
 import com.E_CommerceBackendSystem.ecom.Enitity.Users;
 import com.E_CommerceBackendSystem.ecom.Enitity.AdminEntity.Product;
 import com.E_CommerceBackendSystem.ecom.Enitity.userentity.CartItem;
 import com.E_CommerceBackendSystem.ecom.Services.UserServiceInterface;
 import com.E_CommerceBackendSystem.ecom.Services.adminservices.AdminServiceInterface;
+import com.E_CommerceBackendSystem.ecom.dto.UserCartDto;
 
 @RestController
 @RequestMapping("/user")
@@ -58,10 +60,10 @@ public class UserController {
 	}
 	
 	@GetMapping("/getcart")
-	public ResponseEntity<Map<Object,Object>> getcart(){
+	public ResponseEntity<List<UserCartDto>> getcart(){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		long u_id = serviceInterface.findByUserName(authentication.getName()).getId();
-		return new ResponseEntity<>(serviceInterface.getCart(u_id),HttpStatus.OK);
+		return new ResponseEntity<>(serviceInterface.getCart1(u_id),HttpStatus.OK);
 	}
 	
 	
@@ -87,5 +89,12 @@ public class UserController {
 		Users user = serviceInterface.findByUserName(authentication.getName());
 		if(serviceInterface.checkOut(payments, user)) return new ResponseEntity<>("Order Placed Successfully",HttpStatus.OK);
 		return new ResponseEntity<>("failed to place order",HttpStatus.BAD_REQUEST);
+	}
+	
+	@GetMapping("/myorders")
+	public ResponseEntity<List<Order>> myOrders(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		long u_id = serviceInterface.findByUserName(authentication.getName()).getId();
+	    return new ResponseEntity<>(serviceInterface.findMyOrdes(u_id),HttpStatus.OK);
 	}
 }
