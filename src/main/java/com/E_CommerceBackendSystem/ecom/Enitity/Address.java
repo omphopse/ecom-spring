@@ -1,8 +1,6 @@
-package com.E_CommerceBackendSystem.ecom.Enitity.userentity;
+package com.E_CommerceBackendSystem.ecom.Enitity;
 
 import org.hibernate.annotations.ManyToAny;
-
-import com.E_CommerceBackendSystem.ecom.Enitity.Users;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

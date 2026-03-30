@@ -33,5 +33,5 @@ public class Payments {
 	@Enumerated(EnumType.STRING)
 	private PaymentStatus paymentStatus;
 	@Column(name="transaction_id",nullable = false, unique = true)
-	private String transaction_id;
+	private String transactionId;
 }

@@ -1,4 +1,4 @@
-package com.E_CommerceBackendSystem.ecom.Enitity.userentity;
+package com.E_CommerceBackendSystem.ecom.Enitity;
 
 import java.time.Instant;
 

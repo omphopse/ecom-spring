@@ -8,4 +8,5 @@ import com.E_CommerceBackendSystem.ecom.Enitity.Order;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 	List<Order> findAllByUserId(Long userId);
+	List<Order> findAllByOrderStatus(String status);
 }

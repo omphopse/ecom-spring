@@ -1,4 +1,4 @@
-package com.E_CommerceBackendSystem.ecom.Services.ServicesImpl.UserServices;
+package com.E_CommerceBackendSystem.ecom.Services.ServicesImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;

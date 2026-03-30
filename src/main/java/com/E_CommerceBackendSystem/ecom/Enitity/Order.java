@@ -27,7 +27,7 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="o_id")
-	private long o_id;
+	private long id;
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus;
 	@Column(name="total_price",nullable = true)

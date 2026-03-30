@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.E_CommerceBackendSystem.ecom.Enitity.Users;
 import com.E_CommerceBackendSystem.ecom.Services.UserServiceInterface;
-import com.E_CommerceBackendSystem.ecom.Services.ServicesImpl.UserServices.UserServices;
+import com.E_CommerceBackendSystem.ecom.Services.ServicesImpl.UserServices;
 
 @RestController
 @RequestMapping("/public")
