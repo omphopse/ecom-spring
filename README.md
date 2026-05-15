@@ -156,8 +156,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Contact
 
 For questions or support, please contact:
-- **Email**: your-email@example.com
-- **GitHub Issues**: [Create an issue](https://github.com/your-username/e-commerce-backend/issues)
+- **Email**: omphopse19@gmail.com
 
 ---
 
